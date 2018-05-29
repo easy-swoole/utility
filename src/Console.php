@@ -40,7 +40,7 @@ class Console
      * 重置命令行界面
      * @author : evalor <master@evalor.cn>
      */
-    static function terminal_reset()
+    static function terminalReset()
     {
         echo "\ec";
     }
@@ -51,7 +51,7 @@ class Console
      * @param int $column 列号
      * @author : evalor <master@evalor.cn>
      */
-    static function cursor_home($row = 0, $column = 0)
+    static function cursorHome($row = 0, $column = 0)
     {
         echo "\e[{$row};{$column}H";
     }
@@ -61,7 +61,7 @@ class Console
      * @param int $count 行数 默认1
      * @author : evalor <master@evalor.cn>
      */
-    static function cursor_upward($count = 1)
+    static function cursorUpward($count = 1)
     {
         echo "\e[{$count}A";
     }
@@ -71,7 +71,7 @@ class Console
      * @param int $count 行数 默认1
      * @author : evalor <master@evalor.cn>
      */
-    static function cursor_downward($count = 1)
+    static function cursorDownward($count = 1)
     {
         echo "\e[{$count}B";
     }
@@ -81,7 +81,7 @@ class Console
      * @param int $count 行数 默认1
      * @author : evalor <master@evalor.cn>
      */
-    static function cursor_forward($count = 1)
+    static function cursorForward($count = 1)
     {
         echo "\e[{$count}C";
     }
@@ -91,7 +91,7 @@ class Console
      * @param int $count 行数 默认1
      * @author : evalor <master@evalor.cn>
      */
-    static function cursor_backward($count = 1)
+    static function cursorBackward($count = 1)
     {
         echo "\e[{$count}D";
     }
@@ -102,7 +102,7 @@ class Console
      * @param int $column 列号
      * @author : evalor <master@evalor.cn>
      */
-    static function cursor_force($row = 0, $column = 0)
+    static function cursorForce($row = 0, $column = 0)
     {
         echo "\e[{$row};{$column}f";
     }
@@ -111,7 +111,7 @@ class Console
      * 从当前位置擦除到行首
      * @author : evalor <master@evalor.cn>
      */
-    static function erasure_start()
+    static function erasureStart()
     {
         echo "\e[1K";
     }
@@ -120,7 +120,7 @@ class Console
      * 从当前位置擦除到行尾
      * @author : evalor <master@evalor.cn>
      */
-    static function erasure_end()
+    static function erasureEnd()
     {
         echo "\e[K";
     }
@@ -129,7 +129,7 @@ class Console
      * 擦除当前行
      * @author : evalor <master@evalor.cn>
      */
-    static function erasure_line()
+    static function erasureLine()
     {
         echo "\e[2K";
     }
@@ -138,7 +138,7 @@ class Console
      * 从顶部擦除到底部
      * @author : evalor <master@evalor.cn>
      */
-    static function erasure_to_bottom()
+    static function erasureToBottom()
     {
         echo "\e[J";
     }
@@ -147,7 +147,7 @@ class Console
      * 从底部擦除到顶部
      * @author : evalor <master@evalor.cn>
      */
-    static function erasure_to_head()
+    static function erasureToHead()
     {
         echo "\e[1J";
     }
@@ -156,7 +156,7 @@ class Console
      * 擦除所有并移动到下一行
      * @author : evalor <master@evalor.cn>
      */
-    static function erasure_to_new_line()
+    static function erasureToNewLine()
     {
         echo "\e[2J";
     }
