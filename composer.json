@@ -16,6 +16,5 @@
         "psr-4": {
             "EasySwoole\\Utility\\": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
