@@ -17,6 +17,8 @@ class CommandLine
     private  $argsArr = [];
     private $optAutoCallback = [];
     private $argAutoCallback = [];
+    const OPT_DEFAULT_CALLBACK = 'OPT_DEFAULT_CALLBACK';
+    const ARG_DEFAULT_CALLBACK = 'ARG_DEFAULT_CALLBACK';
 
     public function setOptionCallback(string $optionName,callable $call)
     {
@@ -143,16 +145,26 @@ class CommandLine
             }
             $index++;
         }
+        $call = false;
         foreach ($this->optsArr as $option => $value){
             if(isset($this->optAutoCallback[$option])){
                 call_user_func($this->optAutoCallback[$option],$value);
+                $call = true;
             }
         }
+        if(!$call && isset($this->optAutoCallback[self::OPT_DEFAULT_CALLBACK])){
+            call_user_func($this->optAutoCallback[self::OPT_DEFAULT_CALLBACK],$this->optsArr,$this->argsArr);
+        }
 
+        $call = false;
         foreach ($this->argsArr as $value){
             if(isset($this->argAutoCallback[$value])){
                call_user_func($this->argAutoCallback[$value],$value);
+               $call = true;
             }
+        }
+        if(!$call && isset($this->argAutoCallback[self::ARG_DEFAULT_CALLBACK])){
+            call_user_func($this->argAutoCallback[self::ARG_DEFAULT_CALLBACK],$this->argsArr,$this->optsArr);
         }
 
         return ['opts'=>$this->optsArr, 'args'=>$this->argsArr];
