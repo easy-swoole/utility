@@ -19,6 +19,11 @@ class Random
      */
     static function character($length = 6, $alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789')
     {
+        /*
+         * 在Swoole中如果在父进程内调用了mt_rand，不同的子进程内再调用mt_rand返回的结果会是相同的。所以必须在每个子进程内调用mt_srand重新播种。
+         * shuffle和array_rand等依赖随机数的PHP函数同样会受到影响
+         */
+        mt_srand();
         // 重复字母表以防止生成长度溢出字母表长度
         if ($length >= strlen($alphabet)) {
             $rate = intval($length / strlen($alphabet)) + 1;
