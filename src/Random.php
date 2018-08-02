@@ -53,6 +53,6 @@ class Random
     static function arrayRandOne(array $data)
     {
         mt_srand();
-        return $data[mt_rand(0,count($data))];
+        return $data[mt_rand(0,count($data)-1)];
     }
 }
