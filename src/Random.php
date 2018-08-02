@@ -49,4 +49,10 @@ class Random
     {
         return static::character($length, '0123456789');
     }
+
+    static function arrayRandOne(array $data)
+    {
+        mt_srand();
+        return $data[mt_rand(0,count($data))];
+    }
 }
