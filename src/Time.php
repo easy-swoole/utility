@@ -22,8 +22,9 @@ class Time
     /**
      * 返回某一天开始的时间戳
      * @param string $date 可以传入 字符串日期 时间戳
-     * @author : evalor <master@evalor.cn>
      * @return bool|false|int
+     * @throws \Exception
+     * @author : evalor <master@evalor.cn>
      */
     static function startTimestamp($date = '')
     {
@@ -34,8 +35,9 @@ class Time
     /**
      * 返回某一天结束的时间戳
      * @param string $date 可以传入 字符串日期 时间戳
-     * @author : evalor <master@evalor.cn>
      * @return bool|false|int
+     * @throws \Exception
+     * @author : evalor <master@evalor.cn>
      */
     static function endTimestamp($date = '')
     {
@@ -46,12 +48,13 @@ class Time
     /**
      * 从字符串创建出 Datetime 对象
      * @param string $datetime 传入文本日期或者时间戳
-     * @author : evalor <master@evalor.cn>
      * @return false|\DateTime
+     * @throws \Exception
+     * @author : evalor <master@evalor.cn>
      */
     static function createDateTimeClass($datetime = '')
     {
-        if (preg_match("/\d+/", trim($datetime))) return new \DateTime("@{$datetime}");
+        if (preg_match("/^\d+$/", trim($datetime))) return new \DateTime("@{$datetime}");
         if (!$timestamp = strtotime($datetime)) return false;
         return new \DateTime("@{$timestamp}");
     }
@@ -61,6 +64,7 @@ class Time
      * @author : evalor <master@evalor.cn>
      * @param \DateTime|string $dateTime 传入文本日期或者时间戳
      * @return array 时 分 秒 月 日 年
+     * @throws \Exception
      */
     static function parserDateTime($dateTime)
     {
