@@ -28,7 +28,7 @@ class Random
                 var_dump(mt_rand(0,100));
             }
          */
-        mt_srand();
+        // mt_srand();
         // 重复字母表以防止生成长度溢出字母表长度
         if ($length >= strlen($alphabet)) {
             $rate = intval($length / strlen($alphabet)) + 1;
