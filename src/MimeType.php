@@ -60,7 +60,7 @@ class MimeType
     static function getExtFromStream(?string $stream):?string
     {
         //优先用map方式
-        $mineInfo = self::getFromStream($stream);
+        $mineInfo = self::getMimeTypeFromStream($stream);
         if(isset(self::EXTENSION_MAP[$mineInfo])){
             return self::EXTENSION_MAP[$mineInfo];
         }
