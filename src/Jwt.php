@@ -8,16 +8,6 @@ namespace EasySwoole\Utility;
  */
 class Jwt
 {
-    private static $instance;
-
-    static function getInstance(...$args)
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new static(...$args);
-        }
-        return self::$instance;
-    }
-
     private $alg = "AES";
     private $iss = "EasySwoole";
     private $exp = 7200; // 默认2个小时
@@ -245,6 +235,7 @@ class Jwt
             return false;
         }
         $data = json_decode(base64_decode($this->dataStr), TRUE);
+
         $time = time();
         // 在此之前不可用
         if (!empty($data['nbf']) && ($data['nbf'] > $time)) {
