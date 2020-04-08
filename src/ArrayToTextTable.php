@@ -54,9 +54,12 @@ class ArrayToTextTable
             $table .= $i . $this->row($headerRows, $this->keysAlignment) . PHP_EOL;
             $table .= $i . $this->line('├', '─', '┼', '┤') . PHP_EOL;
         }
-
-        foreach ($data as $row){
-            $table .= $i . $this->row($row, $this->valuesAlignment) . PHP_EOL;
+        $len = count($data);
+        for($index = 0;$index < $len;$index ++ ){
+            $table .= $i . $this->row($data[$index], $this->valuesAlignment) . PHP_EOL;
+            if($index +1 < $len){
+                $table .= $i . $this->line('├', '─', '┼', '┤') . PHP_EOL;
+            }
         }
         $table .= $i . $this->line('└', '─', '┴', '┘') . PHP_EOL;
 
