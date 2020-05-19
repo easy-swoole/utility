@@ -76,7 +76,7 @@ class MimeDetector
      */
     public function setStream(string $stream): self
     {
-        $this->stream = $stream;
+        $this->stream = $this->preStream($stream);
         $this->createByteCache();
         return $this;
     }
@@ -1158,5 +1158,14 @@ class MimeDetector
         $stream = fread($handle, $this->maxByteCacheLen);
         fclose($handle);
         return $stream;
+    }
+
+    /**
+     * @param string $stream
+     * @return string
+     */
+    protected function preStream(string $stream): string
+    {
+        return substr($stream, 0, $this->maxByteCacheLen);
     }
 }
