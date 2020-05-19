@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EasySwoole\\Utility\\Tests": "tests/"
+            "EasySwoole\\Utility\\Tests\\": "tests/"
         }
     }
 }
