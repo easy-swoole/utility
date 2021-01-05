@@ -2,44 +2,46 @@
 
 namespace EasySwoole\Utility;
 
-/**
- * 雪花算法生成器
- * Class SnowFlake
- * @author  : evalor <master@evalor.cn>
- * @package EasySwoole\Utility
- */
+
+use Swoole\Coroutine;
+
 class SnowFlake
 {
     private static $lastTimestamp = 0;
     private static $lastSequence  = 0;
-    private static $sequenceMask  = 4095;
+    private static $sequenceMask  = 2047;
     private static $twepoch       = 1508945092000;
 
     /**
      * 生成基于雪花算法的随机编号
-     * @author : evalor <master@evalor.cn>
-     * @param int $dataCenterID 数据中心ID 0-31
-     * @param int $workerID     任务进程ID 0-31
+     * @param int $dataCenterID 数据中心ID 0-15
+     * @param int $workerID     任务进程ID 0-255
      * @return int 分布式ID
      */
     static function make($dataCenterID = 0, $workerID = 0)
     {
-        // 41bit timestamp + 5bit dataCenter + 5bit worker + 12bit
+        if($dataCenterID > 15){
+            throw new \InvalidArgumentException('dataCenterId must between 0-15');
+        }
+        if($workerID > 255){
+            throw new \InvalidArgumentException('dataCenterId must between 0-127');
+        }
+        // 41bit timestamp + 4bit dataCenterId + 8bit workerId + 11bit lastSequence
         $timestamp = self::timeGen();
         if (self::$lastTimestamp == $timestamp) {
             self::$lastSequence = (self::$lastSequence + 1) & self::$sequenceMask;
-            if (self::$lastSequence == 0) $timestamp = self::tilNextMillis(self::$lastTimestamp);
+            if (self::$lastSequence == 0){
+                $timestamp = self::tilNextMillis(self::$lastTimestamp);
+            }
         } else {
             self::$lastSequence = 0;
         }
         self::$lastTimestamp = $timestamp;
-        $snowFlakeId = (($timestamp - self::$twepoch) << 22) | ($dataCenterID << 17) | ($workerID << 12) | self::$lastSequence;
-        return $snowFlakeId;
+        return (($timestamp - self::$twepoch) << 22) | ($dataCenterID << 18) | ($workerID << 10) | self::$lastSequence;
     }
 
     /**
      * 反向解析雪花算法生成的编号
-     * @author : evalor <master@evalor.cn>
      * @param int|float $snowFlakeId
      * @return \stdClass
      */
@@ -48,32 +50,28 @@ class SnowFlake
         $Binary = str_pad(decbin($snowFlakeId), 64, '0', STR_PAD_LEFT);
         $Object = new \stdClass;
         $Object->timestamp = bindec(substr($Binary, 0, 42)) + self::$twepoch;
-        $Object->dataCenterID = bindec(substr($Binary, 42, 5));
-        $Object->workerID = bindec(substr($Binary, 47, 5));
-        $Object->sequence = bindec(substr($Binary, -12));
+        $Object->timestamp = round($Object->timestamp/1000,3);
+        $Object->dataCenterID = bindec(substr($Binary, 42, 4));
+        $Object->workerID = bindec(substr($Binary, 46, 8));
+        $Object->sequence = bindec(substr($Binary, -11));
         return $Object;
     }
 
-    /**
-     * 等待下一毫秒的时间戳
-     * @author : evalor <master@evalor.cn>
-     * @param $lastTimestamp
-     * @return float
-     */
     private static function tilNextMillis($lastTimestamp)
     {
         $timestamp = self::timeGen();
         while ($timestamp <= $lastTimestamp) {
+            $cid = Coroutine::getCid();
+            if($cid >0 ){
+                Coroutine::sleep(0.001);
+            }else{
+                usleep(1);
+            }
             $timestamp = self::timeGen();
         }
         return $timestamp;
     }
 
-    /**
-     * 获取毫秒级时间戳
-     * @author : evalor <master@evalor.cn>
-     * @return float
-     */
     private static function timeGen()
     {
         return (float)sprintf('%.0f', microtime(true) * 1000);
