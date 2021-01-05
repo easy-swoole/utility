@@ -9,7 +9,7 @@ class SnowFlake
 {
     private static $lastTimestamp = 0;
     private static $lastSequence  = 0;
-    private static $sequenceMask  = 1023;
+    private static $sequenceMask  = 2047;
     private static $twepoch       = 1508945092000;
 
     /**
