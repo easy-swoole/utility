@@ -9,24 +9,24 @@ class SnowFlake
 {
     private static $lastTimestamp = 0;
     private static $lastSequence  = 0;
-    private static $sequenceMask  = 2047;
+    private static $sequenceMask  = 1023;
     private static $twepoch       = 1508945092000;
 
     /**
      * 生成基于雪花算法的随机编号
-     * @param int $dataCenterID 数据中心ID 0-15
-     * @param int $workerID     任务进程ID 0-255
+     * @param int $dataCenterID 数据中心ID 0-31
+     * @param int $workerID     任务进程ID 0-127
      * @return int 分布式ID
      */
     static function make($dataCenterID = 0, $workerID = 0)
     {
-        if($dataCenterID > 15){
-            throw new \InvalidArgumentException('dataCenterId must between 0-15');
+        if($dataCenterID > 31){
+            throw new \InvalidArgumentException('dataCenterId must between 0-31');
         }
-        if($workerID > 255){
+        if($workerID > 127){
             throw new \InvalidArgumentException('dataCenterId must between 0-127');
         }
-        // 41bit timestamp + 4bit dataCenterId + 8bit workerId + 11bit lastSequence
+        // 41bit timestamp + 5bit dataCenterId + 7bit workerId + 11bit lastSequence
         $timestamp = self::timeGen();
         if (self::$lastTimestamp == $timestamp) {
             self::$lastSequence = (self::$lastSequence + 1) & self::$sequenceMask;
@@ -37,7 +37,7 @@ class SnowFlake
             self::$lastSequence = 0;
         }
         self::$lastTimestamp = $timestamp;
-        return (($timestamp - self::$twepoch) << 22) | ($dataCenterID << 18) | ($workerID << 10) | self::$lastSequence;
+        return (($timestamp - self::$twepoch) << 22) | ($dataCenterID << 17) | ($workerID << 10) | self::$lastSequence;
     }
 
     /**
@@ -51,8 +51,8 @@ class SnowFlake
         $Object = new \stdClass;
         $Object->timestamp = bindec(substr($Binary, 0, 42)) + self::$twepoch;
         $Object->timestamp = round($Object->timestamp/1000,3);
-        $Object->dataCenterID = bindec(substr($Binary, 42, 4));
-        $Object->workerID = bindec(substr($Binary, 46, 8));
+        $Object->dataCenterID = bindec(substr($Binary, 42, 5));
+        $Object->workerID = bindec(substr($Binary, 47, 7));
         $Object->sequence = bindec(substr($Binary, -11));
         return $Object;
     }
