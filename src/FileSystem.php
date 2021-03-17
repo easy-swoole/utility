@@ -5,8 +5,6 @@ namespace EasySwoole\Utility;
 use \Exception;
 use \Throwable;
 use \FilesystemIterator;
-use \RecursiveDirectoryIterator;
-use \RecursiveIteratorIterator;
 
 /**
  * Class FileSystem
@@ -295,12 +293,14 @@ class FileSystem
      * @param string $path
      * @param int $mode
      * @param bool $recursive
+     * @return bool
      */
     public function ensureDirectoryExists(string $path, $mode = 0755, bool $recursive = true)
     {
         if (!$this->isDirectory($path)) {
-            $this->makeDirectory($path, $mode, $recursive);
+            return $this->makeDirectory($path, $mode, $recursive);
         }
+        return true;
     }
 
     /**
