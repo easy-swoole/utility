@@ -233,6 +233,35 @@ class FileSystem
     {
         return filesize($path);
     }
+    
+    /**
+     * 人类可读文件大小
+     * @param $filename
+     * @param int $blockSize
+     * @param array $ranks
+     * @return string
+     */
+    public function sizeReadable($filename, $blockSize = 1024, $ranks = ['B', 'KB', 'MB', 'GB', 'TB'])
+    {
+        $fileSize   = filesize($filename);
+        $levelMax   = count($ranks) - 1;
+        $level      = 0;
+        do{
+            $size = $fileSize / $blockSize;
+            if(1 > $size) break;
+            $fileSize = $size;
+            $level++;
+            if($level >= $levelMax){
+                $level = $levelMax;
+                break;
+            }
+        }while(true);
+
+        $rank     = $ranks[$level];
+        $fileSize = number_format($fileSize, 2, '.', '');
+        $fileSize = floatval($fileSize);
+        return $fileSize.$rank;
+    }
 
     /**
      * @param string $path
