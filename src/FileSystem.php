@@ -236,14 +236,14 @@ class FileSystem
     
     /**
      * 人类可读文件大小
-     * @param $filename
+     * @param string $path
      * @param int $blockSize
      * @param array $ranks
      * @return string
      */
-    public function sizeReadable($filename, $blockSize = 1024, $ranks = ['B', 'KB', 'MB', 'GB', 'TB'])
+    public function sizeReadable(string $path, int $blockSize = 1024, array $ranks = ['B', 'KB', 'MB', 'GB', 'TB'])
     {
-        $fileSize   = filesize($filename);
+        $fileSize   = filesize($path);
         $levelMax   = count($ranks) - 1;
         $level      = 0;
         do{
