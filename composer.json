@@ -12,7 +12,8 @@
     "require": {
         "php": ">=7.1.0",
         "ext-json": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-bcmath": "*"
     },
     "autoload": {
         "psr-4": {
