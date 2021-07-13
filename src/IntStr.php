@@ -33,7 +33,7 @@ class IntStr
                     $modulo = 62 + $modulo;
                 }
                 $alpha = self::alphabet[$modulo] . $alpha;
-                $dividend = bcdiv(($dividend - $modulo) , 62);
+                $dividend = bcdiv(($dividend - $modulo), 62, 0);
             }
         }
         return $alpha;
@@ -46,7 +46,7 @@ class IntStr
         $length = strlen($string);
         for ($i = 0; $i < $length; $i++) {
             $return_value +=
-                ($alpha_flip[$string[$i]] + 1) * bcpow(62, ($length - $i - 1));
+                ($alpha_flip[$string[$i]] + 1) * bcpow(62, ($length - $i - 1), 0);
         }
         return $return_value;
     }
