@@ -54,9 +54,19 @@ class Time
      */
     static function createDateTimeClass($datetime = '')
     {
-        if (preg_match("/^\d+$/", trim($datetime))) return new \DateTime("@{$datetime}");
-        if (!$timestamp = strtotime($datetime)) return false;
-        return new \DateTime("@{$timestamp}");
+        // The $datetime is a UNIX timestamp.
+        if (preg_match("/^\d+$/", trim($datetime))) {
+            $timestamp = $datetime;
+        } else {
+            // The $datetime is a date string.
+            if (!$timestamp = strtotime($datetime)) {
+                return false;
+            }
+        }
+        $dateTime = new \DateTime("@{$timestamp}");
+        $dateTime->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+        return $dateTime;
+
     }
 
     /**
