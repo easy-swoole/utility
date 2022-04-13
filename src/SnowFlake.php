@@ -24,7 +24,7 @@ class SnowFlake
             throw new \InvalidArgumentException('dataCenterId must between 0-31');
         }
         if($workerID > 127){
-            throw new \InvalidArgumentException('dataCenterId must between 0-127');
+            throw new \InvalidArgumentException('workerId must between 0-127');
         }
         // 41bit timestamp + 5bit dataCenterId + 7bit workerId + 11bit lastSequence
         $timestamp = self::timeGen();
