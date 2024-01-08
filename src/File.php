@@ -243,4 +243,18 @@ class File
 
         return [ 'files' => $fileContainer, 'dirs' => $dirContainer ];
     }
+
+
+    static function getExt(string $file,bool $withDot = false):?string
+    {
+        $list = explode(".",$file);
+        if(count($list) < 2){
+            return null;
+        }
+        $ext = array_pop($list);
+        if($withDot){
+            return '.'.$ext;
+        }
+        return $ext;
+    }
 }
