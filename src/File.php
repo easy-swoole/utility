@@ -191,11 +191,11 @@ class File
      * 移动文件到另一位置
      * @param string $source    源位置
      * @param string $target    目标位置
-     * @param bool   $overwrite 是否覆盖目标文件
+     * @param bool $overwrite 是否覆盖目标文件
      * @return bool
      * @author : evalor <master@evalor.cn>
      */
-    static function moveFile($source, $target, $overwrite = true)
+    static function moveFile(string $source, string $target, bool $overwrite = true)
     {
         if (!file_exists($source)) return false;
         if (file_exists($target) && $overwrite == false) return false;

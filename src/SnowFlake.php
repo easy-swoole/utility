@@ -61,9 +61,13 @@ class SnowFlake
     {
         $timestamp = self::timeGen();
         while ($timestamp <= $lastTimestamp) {
-            $cid = Coroutine::getCid();
-            if($cid >0 ){
-                Coroutine::sleep(0.001);
+            if(class_exists(Coroutine::class)){
+                $cid = Coroutine::getCid();
+                if($cid >0 ){
+                    Coroutine::sleep(0.001);
+                }else{
+                    usleep(1);
+                }
             }else{
                 usleep(1);
             }

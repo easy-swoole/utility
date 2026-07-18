@@ -25,7 +25,7 @@ class IntStr
         $alpha = '';
         if ($number <= 61) {
             return self::alphabet[$number];
-        } elseif ($number > 61) {
+        } else{
             $dividend = ($number + 1);
             while ($dividend > 0) {
                 $modulo = ($dividend - 1) % 62;

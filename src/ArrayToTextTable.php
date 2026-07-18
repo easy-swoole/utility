@@ -22,6 +22,7 @@ class ArrayToTextTable
     protected $keysAlignment;
     protected $valuesAlignment;
     protected $formatter;
+    protected int|null $minWith = null;
 
     public function __construct($data = [])
     {
@@ -35,6 +36,11 @@ class ArrayToTextTable
     public function __toString()
     {
         return $this->getTable();
+    }
+
+    public function setMinWith(int $minWith)
+    {
+        $this->minWith = $minWith;
     }
 
     public function getTable($data = null)
@@ -164,6 +170,10 @@ class ArrayToTextTable
             $this->widths[$key] = 0;
         }
         $width =  (strlen($value) + mb_strlen($value,'UTF8')) / 2;
+        if(!empty($this->minWith) && ($width < $this->minWith)){
+            $this->widths[$key] = $this->minWith;
+            return;
+        }
         if ($width > $this->widths[$key]){
             $this->widths[$key] = $width;
         }

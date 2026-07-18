@@ -124,7 +124,7 @@ class MimeType
      */
     public static function getMimeTypeByExt(string $ext) : ? string
     {
-        if (strpos($ext, '.') === false) {
+        if (!str_contains($ext, '.')) {
             $ext = ".{$ext}";
         }
         $mimeType = array_search($ext, self::EXTENSION_MAP);
