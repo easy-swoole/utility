@@ -2,7 +2,7 @@
 
 namespace EasySwoole\Utility;
 
-class PhpBloomFilter
+class BloomFilter
 {
     private string $bitmap;
     private int $bitSize;
